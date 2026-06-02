@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plataforma de Micronutrientes de Salud Pública - Colombia</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts para excelente legibilidad -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    /* Ocultar barra de desplazamiento por defecto pero permitir scroll horizontal en pestañas móviles */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Header principal -->
+  <header class="bg-gradient-to-r from-teal-800 via-emerald-700 to-cyan-800 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="bg-white/20 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">Metodología Científica</span>
+          <span class="bg-yellow-400 text-slate-900 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">ICBF (TCAC 2018) & MinSalud</span>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-extrabold mt-2 tracking-tight">Micronutrientes de Interés en Salud Pública</h1>
+        <p class="text-teal-100 text-xs md:text-sm mt-1">Evaluación de ingesta y equivalencias basadas en la <strong>Resolución 3803 de 2016 (RIEN)</strong></p>
+      </div>
+      <div class="flex items-center gap-3 bg-white/10 px-4 py-2.5 rounded-xl backdrop-blur-sm text-xs md:text-sm border border-white/10">
+        <span class="relative flex h-3 w-3">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
+        </span>
+        <span>Canvas de Poblaciones e Immersive Activo</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- COLUMNA IZQUIERDA (3/12): Menu de Micronutrientes (Desktop sidebar / Mobile horizontal) -->
+      <aside class="lg:col-span-3 space-y-4">
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100">
+          <h2 class="text-xs font-extrabold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+            Selecciona Micronutriente
+          </h2>
+          
+          <!-- Menu responsive: scroll en movil, listado en desktop -->
+          <div class="flex lg:flex-col overflow-x-auto lg:overflow-x-visible gap-2 pb-2 lg:pb-0 no-scrollbar" id="nutrient-menu">
+            <!-- Insertado dinámicamente mediante javascript -->
+          </div>
+        </div>
+
+        <!-- Banner de Guías Alimentarias (GABA) -->
+        <div class="bg-gradient-to-br from-emerald-50 to-teal-100 rounded-3xl p-5 border border-emerald-100 text-emerald-950 space-y-2">
+          <h3 class="text-sm font-bold flex items-center gap-2 text-emerald-900">
+            <span>🇨🇴</span> Guías GABA - ICBF
+          </h3>
+          <p class="text-xs text-emerald-800 leading-relaxed">
+            Las porciones simuladas se basan en alimentos representativos de la gastronomía nacional, promoviendo dietas locales sostenibles y frescas.
+          </p>
+        </div>
+      </aside>
+
+      <!-- COLUMNA DERECHA (9/12): Dashboard Activo -->
+      <div class="lg:col-span-9 space-y-6">
+        
+        <!-- Fila de Ajuste de Perfil (Ciclo de Vida del documento 62550.jpg y Sexo Biológico) -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Selector Curso de Vida -->
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">1. Curso de Vida (Ref: 62550.jpg)</label>
+            <div class="grid grid-cols-1 gap-1.5">
+              <button onclick="setLifeStage('juventud')" id="btn-juventud" class="text-left px-4 py-2.5 rounded-xl border-2 text-xs font-bold transition-all flex justify-between items-center">
+                <span>Juventud (14 a 28 años)</span>
+                <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md text-[10px]">14-28</span>
+              </button>
+              <button onclick="setLifeStage('adultez')" id="btn-adultez" class="text-left px-4 py-2.5 rounded-xl border-2 text-xs font-bold transition-all flex justify-between items-center">
+                <span>Adultez (27 a 59 años)</span>
+                <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md text-[10px]">27-59</span>
+              </button>
+              <button onclick="setLifeStage('mayores')" id="btn-mayores" class="text-left px-4 py-2.5 rounded-xl border-2 text-xs font-bold transition-all flex justify-between items-center">
+                <span>Persona Mayor (60+ años)</span>
+                <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md text-[10px]">60+</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Selector Sexo Biológico -->
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">2. Sexo Biológico</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="setGender('hombre')" id="btn-hombre" class="py-3 rounded-xl border-2 text-xs font-bold transition-all text-center">
+                Hombre
+              </button>
+              <button onclick="setGender('mujer')" id="btn-mujer" class="py-3 rounded-xl border-2 text-xs font-bold transition-all text-center">
+                Mujer
+              </button>
+            </div>
+            
+            <!-- Contexto biologico adicional -->
+            <p class="text-[10px] text-slate-400 leading-relaxed mt-2" id="biological-note">
+              La diferenciación metabólica y hormonal dicta el requerimiento de hierro y otros oligoelementos.
+            </p>
+          </div>
+
+          <!-- Factor de Ajuste / Alertas Clínicas Especiales según Nutriente -->
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">3. Ajuste de Ingesta</label>
+            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 h-[calc(100%-24px)] flex flex-col justify-center">
+              <div class="flex items-start gap-2.5">
+                <input type="checkbox" id="chk-risk" onchange="toggleRisk()" class="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                <div>
+                  <label for="chk-risk" id="risk-label" class="block text-xs font-extrabold text-slate-700 cursor-pointer">
+                    Factor de riesgo activo
+                  </label>
+                  <p id="risk-desc" class="text-[10px] text-slate-500 mt-1 leading-normal">
+                    Descripción contextualizada para el nutriente seleccionado.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Tarjeta de Requerimiento diario y Atributos de Interés -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="md:col-span-1 bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-6 shadow-md relative overflow-hidden flex flex-col justify-between min-h-[160px]">
+            <div class="absolute right-2 bottom-2 opacity-5 pointer-events-none" id="nutrient-bg-icon">
+              <span class="text-9xl">⚡</span>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase font-extrabold tracking-wider text-slate-400" id="current-nutrient-tag">Nutriente Seleccionado</span>
+              <h3 class="text-lg font-bold mt-1" id="current-nutrient-name">Cargando...</h3>
+            </div>
+            <div class="mt-4">
+              <span class="text-[10px] block text-slate-400">Meta Oficial RIEN:</span>
+              <div class="flex items-baseline gap-1">
+                <span id="target-value" class="text-4xl font-black text-white">0</span>
+                <span id="target-unit" class="text-sm font-semibold text-slate-400">unit</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ficha de Rol Clínico e Importancia en Salud Pública Colombiana -->
+          <div class="md:col-span-2 bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between">
+            <div>
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Importancia para la Salud Pública en Colombia</h4>
+              <p id="nutrient-clinical-info" class="text-xs text-slate-600 leading-relaxed">
+                Breve descripción sobre el porqué de la fortificación o monitoreo de este micronutriente a nivel nacional.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap gap-2">
+              <span class="bg-rose-50 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded-md" id="clinical-impact-tag-1">Inmunidad</span>
+              <span class="bg-cyan-50 text-cyan-700 text-[10px] font-bold px-2 py-0.5 rounded-md" id="clinical-impact-tag-2">Tejido Conectivo</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel Interactivos de equivalencias, simulador y el lienzo del Canvas -->
+        <div class="bg-white p-2 rounded-2xl shadow-sm border border-slate-100 flex flex-wrap gap-1">
+          <button onclick="setActiveTab('tab-equivalencias')" id="btn-tab-equivalencias" class="flex-1 min-w-[120px] text-center py-2.5 rounded-xl font-bold text-xs transition-all">
+            Equivalencias en Gramos
+          </button>
+          <button onclick="setActiveTab('tab-simulador')" id="btn-tab-simulador" class="flex-1 min-w-[120px] text-center py-2.5 rounded-xl font-bold text-xs transition-all">
+            Mi Plato Combinador 🇨🇴
+          </button>
+          <button onclick="setActiveTab('tab-canvas')" id="btn-tab-canvas" class="flex-1 min-w-[120px] text-center py-2.5 rounded-xl font-bold text-xs transition-all">
+            Lienzo Comparativo (Canvas) 📊
+          </button>
+        </div>
+
+        <!-- SECCIÓN DE CONTENIDO DINÁMICO SEGÚN PESTAÑA -->
+
+        <!-- Pestaña A: Equivalencias individuales de un solo alimento -->
+        <div id="tab-equivalencias" class="space-y-4">
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
+            <div class="mb-4">
+              <h3 class="text-base font-bold text-slate-900">Porción Única Cubridora</h3>
+              <p class="text-xs text-slate-500">¿Cuántos gramos de este único alimento es necesario consumir hoy para suplir la totalidad del requerimiento diario del perfil seleccionado?</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="equivalencies-grid">
+              <!-- Insertado dinámicamente -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Pestaña B: Simulador / Combinador de Dieta -->
+        <div id="tab-simulador" class="hidden space-y-4">
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
+            <div class="border-b border-slate-100 pb-4 mb-6">
+              <h3 class="text-base font-bold text-slate-900">Combinador Dietético</h3>
+              <p class="text-xs text-slate-500">Combina porciones de diferentes alimentos en tu plato diario y observa la cobertura acumulada frente al requerimiento establecido.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+              <!-- Sliders de Alimentos -->
+              <div class="md:col-span-7 space-y-4" id="sliders-container">
+                <!-- Insertado dinámicamente -->
+              </div>
+
+              <!-- Medidor de progreso del combinador -->
+              <div class="md:col-span-5 flex flex-col items-center justify-center bg-slate-50 rounded-3xl p-6 border border-slate-100 text-center">
+                <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-4">Ingesta Acumulada</span>
+                
+                <!-- SVG de progreso circular -->
+                <div class="relative w-40 h-40 flex items-center justify-center">
+                  <svg class="w-full h-full transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="#e2e8f0" stroke-width="12" fill="transparent"/>
+                    <circle id="progress-circle" cx="80" cy="80" r="70" stroke="#10b981" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" stroke-linecap="round" class="transition-all duration-300"/>
+                  </svg>
+                  <div class="absolute flex flex-col items-center justify-center">
+                    <span id="calc-percentage" class="text-3xl font-black text-slate-900">0%</span>
+                    <span class="text-[9px] uppercase tracking-wider text-slate-500 font-bold" id="progress-circle-label">Meta Diaria</span>
+                  </div>
+                </div>
+
+                <div class="mt-4 space-y-1">
+                  <p class="text-xs text-slate-500">
+                    Suma total en el plato: <strong id="calc-total-mg" class="text-slate-800">0</strong> de <span id="calc-target-mg" class="font-bold">0</span>
+                  </p>
+                </div>
+
+                <div id="meta-badge" class="mt-5 px-4 py-2 rounded-xl text-xs font-bold w-full text-center">
+                  Crea tu plato interactivo
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pestaña C: Canvas Interactivo de Población y Curso de Vida -->
+        <div id="tab-canvas" class="hidden space-y-4">
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
+            <div class="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-4">
+              <div>
+                <h3 class="text-base font-bold text-slate-900">Comparativa Gráfica Interactiva (Canvas)</h3>
+                <p class="text-xs text-slate-500">Lienzo que calcula la cantidad de alimento requerida para cubrir el $100\%$ del requerimiento en todas las poblaciones del ciclo de vida.</p>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Selecciona Alimento de Referencia</label>
+                <select id="canvas-food-selector" onchange="handleCanvasFoodChange(this.value)" class="bg-slate-100 border-none rounded-xl text-xs font-semibold px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+                  <!-- Llenado dinámicamente -->
+                </select>
+              </div>
+            </div>
+
+            <!-- Contenedor del Canvas con control responsivo -->
+            <div class="relative bg-slate-50 rounded-2xl border border-slate-200 p-2 overflow-hidden">
+              <canvas id="comparisonCanvas" class="w-full h-80 bg-white rounded-xl shadow-xs cursor-pointer"></canvas>
+            </div>
+            
+            <div class="mt-4 bg-slate-100/50 p-4 rounded-2xl border border-slate-100 text-xs leading-relaxed text-slate-600">
+              <p class="font-bold text-slate-800 flex items-center gap-1 mb-1">
+                <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                ¿Cómo interactuar con el Lienzo?
+              </p>
+              <ul class="list-disc pl-4 space-y-1">
+                <li>Desplaza el cursor sobre las barras para ver la <strong>meta oficial en Colombia</strong> y la dosis exacta de alimento recomendada para cada grupo de edad.</li>
+                <li>Cambia el alimento en el selector superior para ajustar los cálculos y refrescar el Canvas.</li>
+                <li>Activa o desactiva los <strong>factores de riesgo clínico</strong> (por ejemplo: hábito de fumar o deseo de embarazo) para visualizar el impacto gráfico en los requerimientos.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footnote Metodologica -->
+  <footer class="bg-slate-900 text-slate-400 py-10 mt-16 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs space-y-3">
+      <p class="font-semibold text-slate-300">Herramienta Didáctica e Interactiva para Políticas de Nutrición y Salud Pública en Colombia</p>
+      <p class="max-w-3xl mx-auto text-slate-500 leading-relaxed">
+        Los requerimientos diarios están basados de manera fidedigna en la <strong>Resolución 3803 de 2016 (Recomendaciones de Ingesta de Energía y Nutrientes - RIEN)</strong> emitida por el Ministerio de Salud de Colombia. Los perfiles nutricionales de los alimentos provienen de la <strong>Tabla de Composición de Alimentos Colombianos (TCAC 2018)</strong> compilada por el ICBF, con integraciones de soporte del Departamento de Agricultura de los Estados Unidos (USDA).
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPT CON LA LÓGICA DE NEGOCIO Y RENDERIZADO DEL CANVAS -->
+  <script>
+    // Base de datos de Micronutrientes, requerimientos RIEN y Alimentos TCAC 2018
+    const micronutrientsData = {
+      vitC: {
+        id: 'vitC',
+        name: 'Vitamina C (Ácido Ascórbico)',
+        unit: 'mg',
+        icon: '🍊',
+        theme: {
+          colorClass: 'bg-orange-500 hover:bg-orange-600',
+          textClass: 'text-orange-600',
+          borderClass: 'border-orange-500',
+          bgLightClass: 'bg-orange-50/50',
+          badgeClass: 'bg-orange-100 text-orange-800'
+        },
+        baseTarget: {
+          juventud: { hombre: 90, mujer: 75 }, // Basado en 19-28 años de RIEN
+          adultez: { hombre: 90, mujer: 75 },
+          mayores: { hombre: 90, mujer: 75 }
+        },
+        riskToggle: {
+          label: '¿Fuma o consume tabaco?',
+          desc: 'El estrés oxidativo consume la Vitamina C en el cuerpo de forma acelerada. Suma +35 mg diarios según la recomendación clínica de la USDA.',
+          addition: 35
+        },
+        clinicalInfo: 'Es un poderoso antioxidante que mejora la absorción del hierro no hemínico y mantiene la integridad del tejido conectivo. En Colombia se prioriza su consumo para fortalecer la respuesta inmune de la población.',
+        impactTags: ['Inmunidad', 'Absorción de Hierro'],
+        foods: [
+          { id: 'guayaba', name: 'Guayaba Común / Rosada', category: 'Fruta', value: 228, icon: '🍈', desc: 'El súper-alimento colombiano por excelencia, con el mayor aporte de ácido ascórbico.' },
+          { id: 'pimenton', name: 'Pimentón Rojo', category: 'Verdura', value: 139, icon: '🫑', desc: 'Excelente aporte de antioxidantes. Consumir fresco en ensaladas.' },
+          { id: 'brocoli', name: 'Brócoli (Vapor)', category: 'Verdura', value: 90, icon: '🥦', desc: 'Cocinar al vapor por menos de 5 minutos para conservar sus nutrientes.' },
+          { id: 'papaya', name: 'Papaya Maradol', category: 'Fruta', value: 80, icon: '🥭', desc: 'De fácil digestión, idónea para desayunos de las familias colombianas.' },
+          { id: 'fresa', name: 'Fresa Fresca', category: 'Fruta', value: 54, icon: '🍓', desc: 'Aporte antioxidante fantástico para acompañar meriendas.' },
+          { id: 'lulo', name: 'Lulo / Naranjilla', category: 'Fruta', value: 30, icon: '🟢', desc: 'Fruta andina ácida y refrescante, perfecta para jugos instantáneos.' }
+        ]
+      },
+      hierro: {
+        id: 'hierro',
+        name: 'Hierro (Fe)',
+        unit: 'mg',
+        icon: '🩸',
+        theme: {
+          colorClass: 'bg-red-600 hover:bg-red-700',
+          textClass: 'text-red-600',
+          borderClass: 'border-red-600',
+          bgLightClass: 'bg-red-50/50',
+          badgeClass: 'bg-red-100 text-red-800'
+        },
+        baseTarget: {
+          juventud: { hombre: 8, mujer: 18 }, // Mujer fértil requiere alto aporte de hierro en RIEN
+          adultez: { hombre: 8, mujer: 18 },
+          mayores: { hombre: 8, mujer: 8 }   // postmenopausia disminuye requerimiento
+        },
+        riskToggle: {
+          label: '¿Deportista de alto rendimiento / Sangrado abundante?',
+          desc: 'La hemólisis por impacto físico o pérdidas sanguíneas crónicas elevan la necesidad de reposición férrica. Adiciona +5 mg al requerimiento.',
+          addition: 5
+        },
+        clinicalInfo: 'Esencial para la síntesis de hemoglobina y transporte de oxígeno. La deficiencia de hierro produce anemia ferropénica, una alta prioridad epidemiológica en infantes y mujeres gestantes en Colombia.',
+        impactTags: ['Oxigenación', 'Prevención de Anemia'],
+        foods: [
+          { id: 'morcilla', name: 'Morcilla Criolla', category: 'Origen Animal', value: 18, icon: '🥩', desc: 'Aporte extraordinario de hierro hemínico (de alta absorción biológica).' },
+          { id: 'higado', name: 'Hígado de Res (Cocido)', category: 'Origen Animal', value: 6.5, icon: '🍳', desc: 'Excelente biodisponibilidad de hierro hemo combinada con vitamina A.' },
+          { id: 'carne_res', name: 'Carne de Res Magra', category: 'Origen Animal', value: 3.0, icon: '🍖', desc: 'Hierro hemínico de absorción directa en el duodeno.' },
+          { id: 'lentejas', name: 'Lentejas Cocidas', category: 'Leguminosa', value: 3.3, icon: '🍲', desc: 'Hierro no hemínico. Se absorbe mejor si se consume junto a una fuente de Vitamina C.' },
+          { id: 'frijol', name: 'Fríjol Cargamanto Cocido', category: 'Leguminosa', value: 2.5, icon: '🫘', desc: 'Alimento básico colombiano. Se beneficia del remojo prolongado previo.' }
+        ]
+      },
+      vitA: {
+        id: 'vitA',
+        name: 'Vitamina A (Retinol)',
+        unit: 'mcg RAE',
+        icon: '👁️',
+        theme: {
+          colorClass: 'bg-amber-500 hover:bg-amber-600',
+          textClass: 'text-amber-600',
+          borderClass: 'border-amber-500',
+          bgLightClass: 'bg-amber-50/50',
+          badgeClass: 'bg-amber-100 text-amber-800'
+        },
+        baseTarget: {
+          juventud: { hombre: 900, mujer: 700 },
+          adultez: { hombre: 900, mujer: 700 },
+          mayores: { hombre: 900, mujer: 700 }
+        },
+        riskToggle: {
+          label: '¿Baja ingesta de grasas saludables?',
+          desc: 'La Vitamina A es liposoluble. Su absorción disminuye si la dieta es extremadamente baja en lípidos saludables (aguacate, aceites).',
+          addition: 0 // Informativo sin suma
+        },
+        clinicalInfo: 'Nutriente vital para el correcto funcionamiento de la retina, el sistema de diferenciación celular y la barrera epitelial inmune. Su deficiencia extrema produce ceguera nocturna.',
+        impactTags: ['Salud Visual', 'Protección Epitelial'],
+        foods: [
+          { id: 'higado_a', name: 'Hígado de Res', category: 'Origen Animal', value: 9000, icon: '🍳', desc: 'La mayor reserva natural de vitamina A preformada. Consumir de manera espaciada.' },
+          { id: 'zanahoria', name: 'Zanahoria Fresca', category: 'Verdura', value: 835, icon: '🥕', desc: 'Fuente rica de beta-carotenos que el cuerpo transforma eficientemente en Retinol.' },
+          { id: 'auyama', name: 'Auyama / Zapallo', category: 'Verdura', value: 426, icon: '🎃', desc: 'Esencial en las sopas y cremas del país. Rica en carotenoides provitamínicos.' },
+          { id: 'espinaca_a', name: 'Espinaca Fresca', category: 'Verdura', value: 469, icon: '🌿', desc: 'Aporte vegetal que requiere grasa en la preparación para su absorción.' },
+          { id: 'huevo_a', name: 'Yema de Huevo', category: 'Origen Animal', value: 140, icon: '🥚', desc: 'Contiene retinol altamente biodisponible listo para su asimilación.' }
+        ]
+      },
+      vitB9: {
+        id: 'vitB9',
+        name: 'Vitamina B9 (Ácido Fólico)',
+        unit: 'mcg DFE',
+        icon: '🌱',
+        theme: {
+          colorClass: 'bg-lime-600 hover:bg-lime-700',
+          textClass: 'text-lime-600',
+          borderClass: 'border-lime-600',
+          bgLightClass: 'bg-lime-50/50',
+          badgeClass: 'bg-lime-100 text-lime-800'
+        },
+        baseTarget: {
+          juventud: { hombre: 400, mujer: 400 },
+          adultez: { hombre: 400, mujer: 400 },
+          mayores: { hombre: 400, mujer: 400 }
+        },
+        riskToggle: {
+          label: '¿Deseo de embarazo / Gestante?',
+          desc: 'Previene defectos del tubo neural (como la espina bífida) en las primeras fases del desarrollo embrionario. Suma +400 mcg DFE.',
+          addition: 400
+        },
+        clinicalInfo: 'Esencial para la síntesis de ácidos nucleicos y división celular. Es tan crítico para la salud pública que en Colombia existe el mandato legal de fortificar las harinas industriales con ácido fólico.',
+        impactTags: ['Síntesis de ADN', 'Desarrollo Fetal'],
+        foods: [
+          { id: 'espinaca_b9', name: 'Espinaca Fresca', category: 'Verdura', value: 194, icon: '🌿', desc: 'Es una de las fuentes foliares de mayor densidad del complejo B9.' },
+          { id: 'lentejas_b9', name: 'Lentejas Cocidas', category: 'Leguminosa', value: 181, icon: '🍲', desc: 'Una porción cocida provee un altísimo porcentaje del folato requerido.' },
+          { id: 'garbanzo_b9', name: 'Garbanzos Cocidos', category: 'Leguminosa', value: 172, icon: '🫘', desc: 'Muy nutritivos y recomendados para la planeación dietaria familiar.' },
+          { id: 'aguacate_b9', name: 'Aguacate Criollo', category: 'Fruta', value: 81, icon: '🥑', desc: 'Fruta rica en grasas insaturadas protectoras y folatos naturales.' },
+          { id: 'higado_b9', name: 'Hígado de Res', category: 'Origen Animal', value: 290, icon: '🍳', desc: 'Almacena folatos biológicamente activos y de fácil asimilación.' }
+        ]
+      },
+      vitB12: {
+        id: 'vitB12',
+        name: 'Vitamina B12 (Cobalamina)',
+        unit: 'mcg',
+        icon: '🥩',
+        theme: {
+          colorClass: 'bg-purple-600 hover:bg-purple-700',
+          textClass: 'text-purple-600',
+          borderClass: 'border-purple-600',
+          bgLightClass: 'bg-purple-50/50',
+          badgeClass: 'bg-purple-100 text-purple-800'
+        },
+        baseTarget: {
+          juventud: { hombre: 2.4, mujer: 2.4 },
+          adultez: { hombre: 2.4, mujer: 2.4 },
+          mayores: { hombre: 2.4, mujer: 2.4 } // Requiere atención en absorción gástrica
+        },
+        riskToggle: {
+          label: '¿Alimentación vegana / Edad > 50 años?',
+          desc: 'La B12 solo se sintetiza de forma natural por bacterias en productos animales. En personas mayores, disminuye el factor intrínseco gástrico, lo que afecta su absorción.',
+          addition: 0 // Informativo crítico
+        },
+        clinicalInfo: 'Involucrada en la eritropoyesis (producción de glóbulos rojos) y la mielinización del sistema nervioso central. Su deficiencia causa anemia megaloblástica y neuropatías.',
+        impactTags: ['Función Neuronal', 'Glóbulos Rojos'],
+        foods: [
+          { id: 'higado_b12', name: 'Hígado de Res', category: 'Origen Animal', value: 59, icon: '🍳', desc: 'Concentración masiva de cobalamina debido a su depósito hepático.' },
+          { id: 'atun_b12', name: 'Atún en Lata', category: 'Origen Animal', value: 2.2, icon: '🐟', desc: 'Opción accesible y proteica de excelente aporte celular.' },
+          { id: 'carne_res_b12', name: 'Carne de Res Magra', category: 'Origen Animal', value: 2.6, icon: '🥩', desc: 'Provee cobalamina de alta biodisponibilidad unida a proteínas.' },
+          { id: 'huevo_b12', name: 'Huevo Cocido', category: 'Origen Animal', value: 1.1, icon: '🥚', desc: 'Unidad económica y básica con cobalamina y proteínas completas.' },
+          { id: 'queso_b12', name: 'Queso Campesino', category: 'Lácteo', value: 1.0, icon: '🧀', desc: 'Lácteo tradicional colombiano que conserva su riqueza vitamínica.' }
+        ]
+      },
+      zinc: {
+        id: 'zinc',
+        name: 'Zinc (Zn)',
+        unit: 'mg',
+        icon: '🛡️',
+        theme: {
+          colorClass: 'bg-cyan-600 hover:bg-cyan-700',
+          textClass: 'text-cyan-600',
+          borderClass: 'border-cyan-600',
+          bgLightClass: 'bg-cyan-50/50',
+          badgeClass: 'bg-cyan-100 text-cyan-800'
+        },
+        baseTarget: {
+          juventud: { hombre: 11, mujer: 8 },
+          adultez: { hombre: 11, mujer: 8 },
+          mayores: { hombre: 11, mujer: 8 }
+        },
+        riskToggle: {
+          label: '¿Alta ingesta de fitatos (Cereales integrales sin remojar)?',
+          desc: 'Los fitatos de los granos se unen químicamente al zinc impidiendo su absorción. Se recomienda optimizar la ingesta total si no se practican técnicas de remojo.',
+          addition: 0 // Informativo de absorción
+        },
+        clinicalInfo: 'Co-factor enzimático de más de 300 reacciones químicas, esencial para la cicatrización de heridas, división celular, respuesta inmunitaria y percepción de los sentidos del gusto y olfato.',
+        impactTags: ['Cicatrización', 'Sistema Inmune'],
+        foods: [
+          { id: 'semillas_auyama', name: 'Semillas de Auyama', category: 'Semillas', value: 7.8, icon: '🌻', desc: 'Sorprendente aporte de zinc vegetal, ideal como aderezo o merienda.' },
+          { id: 'carne_res_zn', name: 'Carne de Res', category: 'Origen Animal', value: 6.3, icon: '🥩', desc: 'El zinc de origen animal presenta el mayor porcentaje de absorción.' },
+          { id: 'higado_zn', name: 'Hígado de Res', category: 'Origen Animal', value: 4.0, icon: '🍳', desc: 'Nutriente completo con alta concentración de oligoelementos.' },
+          { id: 'queso_costeno', name: 'Queso Costeño', category: 'Lácteo', value: 2.5, icon: '🧀', desc: 'Queso salado y tradicional con buen perfil de asimilación.' },
+          { id: 'lentejas_zn', name: 'Lentejas Cocidas', category: 'Leguminosa', value: 1.3, icon: '🍲', desc: 'Fuente vegetal. Se optimiza mediante la germinación o el remojo.' }
+        ]
+      },
+      yodo: {
+        id: 'yodo',
+        name: 'Yodo (I)',
+        unit: 'mcg',
+        icon: '🧂',
+        theme: {
+          colorClass: 'bg-blue-600 hover:bg-blue-700',
+          textClass: 'text-blue-600',
+          borderClass: 'border-blue-600',
+          bgLightClass: 'bg-blue-50/50',
+          badgeClass: 'bg-blue-100 text-blue-800'
+        },
+        baseTarget: {
+          juventud: { hombre: 150, mujer: 150 },
+          adultez: { hombre: 150, mujer: 150 },
+          mayores: { hombre: 150, mujer: 150 }
+        },
+        riskToggle: {
+          label: '¿Consumo exclusivo de sal gourmet no yodada?',
+          desc: 'La sal marina sin refinar o las sales exóticas gourmet a menudo NO contienen yodo adicionado, exponiendo al individuo a deficiencias.',
+          addition: 0 // Informativo de salud pública
+        },
+        clinicalInfo: 'Componente indispensable para la síntesis de las hormonas tiroideas (T3 y T4), reguladoras del metabolismo basal, desarrollo cerebral y crecimiento corporal. El programa nacional de sal yodada redujo drásticamente el bocio en Colombia.',
+        impactTags: ['Tiroides', 'Metabolismo'],
+        foods: [
+          { id: 'sal_yodada', name: 'Sal de Mesa Yodada', category: 'Mineral', value: 5000, icon: '🧂', desc: 'Fortificada bajo legislación colombiana. Solo 3 gramos diarios cubren el 100%.' },
+          { id: 'bacalao_yodo', name: 'Pescado de Mar (Bacalao)', category: 'Origen Animal', value: 90, icon: '🐟', desc: 'Los pescados de mar absorben el yodo disuelto de forma directa.' },
+          { id: 'camarones_yodo', name: 'Camarones', category: 'Origen Animal', value: 40, icon: '🦐', desc: 'Excelente perfil de minerales traza y antioxidantes marinos.' },
+          { id: 'leche_yodo', name: 'Leche de Vaca', category: 'Lácteo', value: 35, icon: '🥛', desc: 'Aporte derivado de la dieta controlada del ganado de ordeño.' },
+          { id: 'huevo_yodo', name: 'Huevo de Gallina', category: 'Origen Animal', value: 24, icon: '🥚', desc: 'Contribución constante y fácil de integrar en la dieta diaria.' }
+        ]
+      },
+      vitD: {
+        id: 'vitD',
+        name: 'Vitamina D (Calciferol)',
+        unit: 'mcg', // 1 mcg = 40 UI
+        icon: '☀️',
+        theme: {
+          colorClass: 'bg-yellow-500 hover:bg-yellow-600',
+          textClass: 'text-yellow-600',
+          borderClass: 'border-yellow-500',
+          bgLightClass: 'bg-yellow-50/50',
+          badgeClass: 'bg-yellow-100 text-yellow-800'
+        },
+        baseTarget: {
+          juventud: { hombre: 15, mujer: 15 }, // 15 mcg = 600 UI
+          adultez: { hombre: 15, mujer: 15 },
+          mayores: { hombre: 20, mujer: 20 }  // Personas mayores requieren 20 mcg (800 UI) para salud ósea
+        },
+        riskToggle: {
+          label: '¿Muy baja exposición al sol?',
+          desc: 'La síntesis cutánea por luz UVB es la fuente principal. Ante la ausencia de sol por trabajo de oficina, suma +5 mcg al requerimiento dietético diario.',
+          addition: 5
+        },
+        clinicalInfo: 'Promueve activamente la absorción intestinal del calcio y regula la mineralización ósea. Su deficiencia genera osteopenia, osteoporosis y mayor riesgo de caídas en personas mayores.',
+        impactTags: ['Salud Ósea', 'Absorción de Calcio'],
+        foods: [
+          { id: 'aceite_bacalao', name: 'Aceite de Hígado de Bacalao', category: 'Suplemento', value: 250, icon: '🥄', desc: 'La fuente natural más concentrada del planeta en vitaminas D y A.' },
+          { id: 'salmon_trucha', name: 'Trucha de Agua Dulce / Salmón', category: 'Origen Animal', value: 10, icon: '🐟', desc: 'La trucha criolla andina provee excelentes niveles de vitamina D.' },
+          { id: 'huevo_vitd', name: 'Yema de Huevo', category: 'Origen Animal', value: 5.4, icon: '🥚', desc: 'Aporte natural presente en el perfil de grasas de la yema.' },
+          { id: 'atun_vitd', name: 'Atún en Lata', category: 'Origen Animal', value: 5.0, icon: '🥫', desc: 'Alternativa práctica y de almacenamiento prolongado.' },
+          { id: 'leche_fort', name: 'Leche Entera Fortificada', category: 'Lácteo', value: 1.0, icon: '🥛', desc: 'Muchas marcas de leche nacional adicionan Vitamina D para potenciar el calcio.' }
+        ]
+      }
+    };
+
+    let currentNutrient = 'vitC'; // Nutriente inicial
+    let currentLifeStage = 'juventud'; // 'juventud' | 'adultez' | 'mayores'
+    let currentGender = 'hombre'; // 'hombre' | 'mujer'
+    let isRiskActive = false; // Estado del interruptor de riesgo
+    let activeTab = 'tab-equivalencias'; // Pestaña activa
+    let selectedComparisonFoodId = ''; // Alimento seleccionado para el canvas
+
+    // Estado del plato simulador (guarda el gramaje para cada alimento del nutriente activo)
+    let sliderValues = {};
+
+    // Inicializa el estado para los sliders
+    function resetActiveSliders() {
+      sliderValues = {};
+      const activeNutrient = micronutrientsData[currentNutrient];
+      activeNutrient.foods.forEach(food => {
+        sliderValues[food.id] = 0;
+      });
+    }
+
+    // Calcula el requerimiento basado en el estado actual y las normas RIEN
+    function calculateCurrentTarget() {
+      const activeNutrient = micronutrientsData[currentNutrient];
+      let target = activeNutrient.baseTarget[currentLifeStage][currentGender];
+
+      // Sumar el factor de ajuste si está activo
+      if (isRiskActive && activeNutrient.riskToggle.addition > 0) {
+        target += activeNutrient.riskToggle.addition;
+      }
+
+      return target;
+    }
+
+    // Construye el menú de micronutrientes dinámicamente
+    function buildNutrientMenu() {
+      const menu = document.getElementById('nutrient-menu');
+      menu.innerHTML = '';
+
+      Object.values(micronutrientsData).forEach(nut => {
+        const isActive = nut.id === currentNutrient;
+        
+        const btn = document.createElement('button');
+        btn.onclick = () => selectNutrient(nut.id);
+        
+        // Estilos condicionales basados en el estado activo
+        if (isActive) {
+          btn.className = `flex items-center gap-3 p-3.5 rounded-2xl border-2 w-full text-left transition-all shrink-0 select-none ${nut.theme.borderClass} ${nut.theme.bgLightClass}`;
+        } else {
+          btn.className = "flex items-center gap-3 p-3.5 rounded-2xl border-2 border-slate-100 hover:border-slate-200 w-full text-left transition-all shrink-0 select-none bg-white";
+        }
+
+        btn.innerHTML = `
+          <span class="text-2xl">${nut.icon}</span>
+          <div class="truncate">
+            <span class="block text-xs font-extrabold text-slate-800">${nut.name.split(' (')[0]}</span>
+            <span class="text-[10px] text-slate-400 font-semibold uppercase">${nut.unit}</span>
+          </div>
+        `;
+        menu.appendChild(btn);
+      });
+    }
+
+    // Cambia el micronutriente activo
+    function selectNutrient(nutrientId) {
+      currentNutrient = nutrientId;
+      isRiskActive = false; // Reinicia el factor de riesgo al cambiar
+      document.getElementById('chk-risk').checked = false;
+
+      resetActiveSliders();
+      
+      // Auto-seleccionar primer alimento del nuevo nutriente para el canvas comparativo
+      const activeNutrient = micronutrientsData[currentNutrient];
+      selectedComparisonFoodId = activeNutrient.foods[0].id;
+
+      buildNutrientMenu();
+      updateUI();
+      buildCanvasFoodSelector();
+    }
+
+    // Actualiza la interfaz global según las selecciones actuales
+    function updateUI() {
+      const activeNutrient = micronutrientsData[currentNutrient];
+      const target = calculateCurrentTarget();
+
+      // Actualizar tarjeta del Requerimiento Principal
+      document.getElementById('target-value').innerText = target % 1 === 0 ? target : target.toFixed(1);
+      document.getElementById('target-unit').innerText = activeNutrient.unit;
+      document.getElementById('current-nutrient-name').innerText = activeNutrient.name;
+      document.getElementById('current-nutrient-tag').innerText = `Requerimiento Diario`;
+      document.getElementById('nutrient-bg-icon').innerHTML = `<span class="text-9xl">${activeNutrient.icon}</span>`;
+
+      // Actualizar cuadro clínico/salud pública
+      document.getElementById('nutrient-clinical-info').innerText = activeNutrient.clinicalInfo;
+      document.getElementById('clinical-impact-tag-1').innerText = activeNutrient.impactTags[0];
+      document.getElementById('clinical-impact-tag-2').innerText = activeNutrient.impactTags[1];
+
+      // Actualizar Configuración de Riesgo
+      document.getElementById('risk-label').innerText = activeNutrient.riskToggle.label;
+      document.getElementById('risk-desc').innerText = activeNutrient.riskToggle.desc;
+
+      // Actualizar textos informativos en el simulador
+      document.getElementById('calc-target-mg').innerText = `${target % 1 === 0 ? target : target.toFixed(1)} ${activeNutrient.unit}`;
+
+      // Renderizar secciones de contenido
+      renderEquivalencies(target);
+      renderSliders();
+      updateSimulatorCalculations(target);
+
+      // Redibujar Canvas
+      drawComparisonChart();
+    }
+
+    // Renderiza la lista de equivalencias individuales
+    function renderEquivalencies(target) {
+      const container = document.getElementById('equivalencies-grid');
+      container.innerHTML = '';
+
+      const activeNutrient = micronutrientsData[currentNutrient];
+
+      activeNutrient.foods.forEach(food => {
+        // Gramos necesarios = (Requerimiento en mg / mg por 100g de alimento) * 100
+        const gramsNeeded = ((target / food.value) * 100).toFixed(1);
+
+        const card = document.createElement('div');
+        card.className = "bg-slate-50 border border-slate-100 hover:border-slate-200 rounded-2xl p-4 flex flex-col justify-between transition-all duration-300";
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-2xl">${food.icon}</span>
+              <span class="text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-200/50 text-slate-700">
+                ${food.category}
+              </span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-900 truncate">${food.name}</h4>
+            <p class="text-[10px] text-slate-500 mt-1 leading-snug">${food.desc}</p>
+          </div>
+          
+          <div class="border-t border-slate-100 pt-3 mt-3">
+            <div class="flex justify-between items-center text-[10px] mb-1.5">
+              <span class="text-slate-500">Aporte por 100g:</span>
+              <strong class="text-slate-800">${food.value} ${activeNutrient.unit.split(' ')[0]}</strong>
+            </div>
+            <div class="${activeNutrient.theme.bgLightClass} rounded-xl p-2.5 border border-slate-100 flex justify-between items-center">
+              <span class="text-[10px] font-bold ${activeNutrient.theme.textClass}">Ración requerida:</span>
+              <span class="text-sm font-black ${activeNutrient.theme.textClass}">${gramsNeeded} g</span>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Renderiza la lista de sliders para el plato simulador
+    function renderSliders() {
+      const container = document.getElementById('sliders-container');
+      container.innerHTML = '';
+
+      const activeNutrient = micronutrientsData[currentNutrient];
+
+      activeNutrient.foods.forEach(food => {
+        const grams = sliderValues[food.id] || 0;
+        const mgAportados = ((food.value / 100) * grams).toFixed(1);
+
+        const wrapper = document.createElement('div');
+        wrapper.className = "bg-slate-50/60 p-3 rounded-2xl border border-slate-100/80 space-y-2";
+        wrapper.innerHTML = `
+          <div class="flex justify-between text-xs font-semibold">
+            <span class="text-slate-800 flex items-center gap-1.5">
+              <span class="text-lg">${food.icon}</span> ${food.name}
+            </span>
+            <span id="label-slider-${food.id}" class="${activeNutrient.theme.textClass} font-extrabold ${activeNutrient.theme.bgLightClass} px-2 py-0.5 rounded-md text-xs">${grams} g</span>
+          </div>
+          <input type="range" min="0" max="300" step="5" value="${grams}" 
+            id="slider-${food.id}" 
+            oninput="handleSliderChange('${food.id}', this.value)"
+            class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer focus:outline-none accent-slate-800">
+          <div class="flex justify-between text-[9px] text-slate-400">
+            <span>0g</span>
+            <span>Aporte: <strong id="val-slider-mg-${food.id}">${mgAportados} ${activeNutrient.unit.split(' ')[0]}</strong></span>
+            <span>300g</span>
+          </div>
+        `;
+        container.appendChild(wrapper);
+      });
+    }
+
+    // Maneja la interacción individual del control de porciones
+    function handleSliderChange(foodId, val) {
+      sliderValues[foodId] = parseInt(val);
+      
+      // Actualizar etiqueta del slider
+      document.getElementById(`label-slider-${foodId}`).innerText = `${val} g`;
+      
+      // Calcular aporte parcial
+      const activeNutrient = micronutrientsData[currentNutrient];
+      const food = activeNutrient.foods.find(f => f.id === foodId);
+      const mgAportados = ((food.value / 100) * val).toFixed(1);
+      
+      document.getElementById(`val-slider-mg-${foodId}`).innerText = `${mgAportados} ${activeNutrient.unit.split(' ')[0]}`;
+
+      // Recalcular plato general
+      const target = calculateCurrentTarget();
+      updateSimulatorCalculations(target);
+    }
+
+    // Actualiza los medidores de logro de meta en el simulador
+    function updateSimulatorCalculations(target) {
+      const activeNutrient = micronutrientsData[currentNutrient];
+      let totalValue = 0;
+
+      activeNutrient.foods.forEach(food => {
+        const grams = sliderValues[food.id] || 0;
+        totalValue += (food.value / 100) * grams;
+      });
+
+      let percentage = Math.round((totalValue / target) * 100);
+
+      // Actualizar textos y números
+      document.getElementById('calc-total-mg').innerText = `${totalValue.toFixed(1)} ${activeNutrient.unit.split(' ')[0]}`;
+      document.getElementById('calc-percentage').innerText = `${percentage}%`;
+
+      // Actualizar barra circular SVG (circunferencia aproximada 440)
+      const circle = document.getElementById('progress-circle');
+      if (circle) {
+        const circumference = 440;
+        const offset = circumference - (Math.min(percentage, 100) / 100) * circumference;
+        circle.style.strokeDashoffset = offset;
+        
+        // Ajustar color de la barra según porcentaje
+        if (percentage >= 100) {
+          circle.setAttribute('stroke', '#059669'); // Verde meta cumplida
+        } else if (percentage >= 50) {
+          circle.setAttribute('stroke', '#3b82f6'); // Azul medio
+        } else {
+          circle.setAttribute('stroke', '#eab308'); // Amarillo bajo
+        }
+      }
+
+      // Actualizar el estado del badge informativo
+      const badge = document.getElementById('meta-badge');
+      if (totalValue === 0) {
+        badge.className = "mt-5 px-4 py-2 rounded-xl text-xs font-bold w-full text-center bg-slate-100 text-slate-500 border border-slate-200/50";
+        badge.innerText = "Empieza a deslizar alimentos";
+      } else if (totalValue < target) {
+        badge.className = "mt-5 px-4 py-2 rounded-xl text-xs font-bold w-full text-center bg-amber-50 text-amber-700 border border-amber-200/50";
+        badge.innerText = `Faltan ${(target - totalValue).toFixed(1)} ${activeNutrient.unit.split(' ')[0]} para la meta`;
+      } else {
+        badge.className = "mt-5 px-4 py-2 rounded-xl text-xs font-bold w-full text-center bg-emerald-100 text-emerald-800 border border-emerald-200/50 animate-bounce";
+        badge.innerText = "¡Requerimiento diario cubierto! 🎉";
+      }
+    }
+
+    // Reinicia los controles deslizantes
+    function resetSliders() {
+      resetActiveSliders();
+      renderSliders();
+      const target = calculateCurrentTarget();
+      updateSimulatorCalculations(target);
+    }
+
+    // Cambia la etapa del ciclo de vida del usuario (basado en la imagen 62550.jpg)
+    function setLifeStage(stage) {
+      currentLifeStage = stage;
+      
+      ['juventud', 'adultez', 'mayores'].forEach(s => {
+        const btn = document.getElementById(`btn-${s}`);
+        if (s === stage) {
+          btn.className = "text-left px-4 py-2.5 rounded-xl border-2 text-xs font-extrabold transition-all flex justify-between items-center bg-slate-900 border-slate-900 text-white";
+        } else {
+          btn.className = "text-left px-4 py-2.5 rounded-xl border-2 text-xs font-bold transition-all flex justify-between items-center bg-white border-slate-200 text-slate-700 hover:border-slate-300";
+        }
+      });
+
+      updateUI();
+    }
+
+    // Cambia el sexo biológico
+    function setGender(gender) {
+      currentGender = gender;
+      
+      const btnHombre = document.getElementById('btn-hombre');
+      const btnMujer = document.getElementById('btn-mujer');
+      
+      if (gender === 'hombre') {
+        btnHombre.className = "py-3 rounded-xl border-2 text-xs font-extrabold transition-all text-center bg-slate-900 border-slate-900 text-white";
+        btnMujer.className = "py-3 rounded-xl border-2 text-xs font-bold transition-all text-center bg-white border-slate-200 text-slate-700 hover:border-slate-300";
+        document.getElementById('biological-note').innerText = "Requerimientos estandarizados para el metabolismo masculino libre de pérdidas periódicas de hierro.";
+      } else {
+        btnHombre.className = "py-3 rounded-xl border-2 text-xs font-bold transition-all text-center bg-white border-slate-200 text-slate-700 hover:border-slate-300";
+        btnMujer.className = "py-3 rounded-xl border-2 text-xs font-extrabold transition-all text-center bg-slate-900 border-slate-900 text-white";
+        document.getElementById('biological-note').innerText = "Toma en cuenta demandas adicionales por ciclo menstrual fértil o potencial concepción.";
+      }
+
+      updateUI();
+    }
+
+    // Cambia el factor de riesgo
+    function toggleRisk() {
+      isRiskActive = document.getElementById('chk-risk').checked;
+      updateUI();
+    }
+
+    // Cambia de pestaña
+    function setActiveTab(tabId) {
+      activeTab = tabId;
+      
+      ['tab-equivalencias', 'tab-simulador', 'tab-canvas'].forEach(t => {
+        const panel = document.getElementById(t);
+        const btn = document.getElementById(`btn-${t}`);
+        
+        if (t === tabId) {
+          panel.classList.remove('hidden');
+          btn.className = "flex-1 min-w-[120px] text-center py-2.5 rounded-xl font-extrabold text-xs transition-all bg-slate-900 text-white shadow-xs";
+        } else {
+          panel.classList.add('hidden');
+          btn.className = "flex-1 min-w-[120px] text-center py-2.5 rounded-xl font-bold text-xs transition-all text-slate-500 hover:text-slate-800 hover:bg-slate-50";
+        }
+      });
+
+      if (tabId === 'tab-canvas') {
+        // Redibujar el Canvas al abrir su pestaña para asegurar dimensiones correctas
+        setTimeout(drawComparisonChart, 50);
+      }
+    }
+
+    // Llenar el selector de alimentos del lienzo comparativo
+    function buildCanvasFoodSelector() {
+      const selector = document.getElementById('canvas-food-selector');
+      selector.innerHTML = '';
+
+      const activeNutrient = micronutrientsData[currentNutrient];
+
+      activeNutrient.foods.forEach(food => {
+        const option = document.createElement('option');
+        option.value = food.id;
+        option.text = `${food.icon} ${food.name}`;
+        if (food.id === selectedComparisonFoodId) {
+          option.selected = true;
+        }
+        selector.appendChild(option);
+      });
+    }
+
+    function handleCanvasFoodChange(foodId) {
+      selectedComparisonFoodId = foodId;
+      drawComparisonChart();
+    }
+
+    // LOGICA DE RENDERIZADO DEL CANVAS EN 2D PARA COMPARACIÓN DE CURSOS DE VIDA
+    let barsData = []; // Guarda las coordenadas físicas de las barras para hover
+    let hoveredBarIndex = -1; // Guarda el índice de la barra que tiene hover
+
+    function drawComparisonChart() {
+      const canvas = document.getElementById('comparisonCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      
+      // Ajustar resolución retina
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      
+      const width = rect.width;
+      const height = rect.height;
+      
+      ctx.clearRect(0, 0, width, height);
+      
+      const activeNutrient = micronutrientsData[currentNutrient];
+      const activeFood = activeNutrient.foods.find(f => f.id === selectedComparisonFoodId) || activeNutrient.foods[0];
+      if (!activeFood) return;
+
+      // Poblaciones a graficar comparativamente según ciclo vital (Ref 62550.jpg)
+      const populations = [
+        { label: 'Juventud H', stage: 'juventud', gender: 'hombre', color: '#0f766e' }, // Verde azulado oscuro
+        { label: 'Juventud M', stage: 'juventud', gender: 'mujer', color: '#0d9488' },  // Verde azulado medio
+        { label: 'Adultez H', stage: 'adultez', gender: 'hombre', color: '#0284c7' },   // Azul cielo oscuro
+        { label: 'Adultez M', stage: 'adultez', gender: 'mujer', color: '#38bdf8' },    // Azul cielo medio
+        { label: 'P. Mayor H', stage: 'mayores', gender: 'hombre', color: '#4f46e5' },  // Indigo oscuro
+        { label: 'P. Mayor M', stage: 'mayores', gender: 'mujer', color: '#818cf8' }    // Indigo medio
+      ];
+
+      barsData = [];
+      let maxGrams = 0;
+
+      // Calcular requerimiento final y gramos necesarios por cada grupo
+      populations.forEach(p => {
+        let baseTarget = activeNutrient.baseTarget[p.stage][p.gender];
+        
+        // Sumar factor de riesgo si el usuario lo tiene activo
+        if (isRiskActive && activeNutrient.riskToggle.addition > 0) {
+          baseTarget += activeNutrient.riskToggle.addition;
+        }
+
+        const gramsNeeded = (baseTarget / activeFood.value) * 100;
+        if (gramsNeeded > maxGrams) {
+          maxGrams = gramsNeeded;
+        }
+
+        p.calculatedTarget = baseTarget;
+        p.grams = gramsNeeded;
+      });
+
+      // Configuración de márgenes del gráfico
+      const paddingLeft = 60;
+      const paddingRight = 30;
+      const paddingTop = 40;
+      const paddingBottom = 60;
+      const chartWidth = width - paddingLeft - paddingRight;
+      const chartHeight = height - paddingTop - paddingBottom;
+
+      // Dibujar cuadrícula de fondo (Eje Y)
+      ctx.strokeStyle = '#f1f5f9';
+      ctx.lineWidth = 1;
+      ctx.font = '10px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = '#64748b';
+      ctx.textAlign = 'right';
+
+      const tickCount = 5;
+      for (let i = 0; i <= tickCount; i++) {
+        const yVal = (maxGrams * 1.15) * (i / tickCount);
+        const yPos = height - paddingBottom - (chartHeight * (i / tickCount));
+        
+        ctx.beginPath();
+        ctx.moveTo(paddingLeft, yPos);
+        ctx.lineTo(width - paddingRight, yPos);
+        ctx.stroke();
+        
+        ctx.fillText(`${Math.round(yVal)} g`, paddingLeft - 10, yPos + 3);
+      }
+
+      // Dibujar línea del eje X
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(paddingLeft, height - paddingBottom);
+      ctx.lineTo(width - paddingRight, height - paddingBottom);
+      ctx.stroke();
+
+      // Dibujar barras del gráfico
+      const totalBars = populations.length;
+      const barSpacing = chartWidth / totalBars;
+      const barWidth = barSpacing * 0.55;
+
+      populations.forEach((p, idx) => {
+        const xPos = paddingLeft + (idx * barSpacing) + (barSpacing - barWidth) / 2;
+        const barHeight = maxGrams > 0 ? (p.grams / (maxGrams * 1.15)) * chartHeight : 0;
+        const yPos = height - paddingBottom - barHeight;
+
+        // Guardar detalles de hit box para hover
+        barsData.push({
+          index: idx,
+          x: xPos,
+          y: yPos,
+          w: barWidth,
+          h: barHeight,
+          p: p
+        });
+
+        // Dibujar barra con sombreado de hover
+        ctx.fillStyle = p.color;
+        if (hoveredBarIndex === idx) {
+          ctx.fillStyle = adjustColorBrightness(p.color, -20); // Oscurecer un poco al hover
+        }
+
+        // Barra con bordes superiores redondeados
+        ctx.beginPath();
+        ctx.roundRect(xPos, yPos, barWidth, barHeight, [6, 6, 0, 0]);
+        ctx.fill();
+
+        // Valor textual exacto encima de cada barra
+        ctx.fillStyle = '#1e293b';
+        ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(`${p.grams.toFixed(0)} g`, xPos + barWidth / 2, yPos - 6);
+
+        // Etiquetas debajo del eje X (Grupo de población)
+        ctx.fillStyle = '#475569';
+        ctx.font = 'bold 10px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText(p.label, xPos + barWidth / 2, height - paddingBottom + 18);
+
+        // Subtítulo con meta en mg/mcg
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '9px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText(`(${p.calculatedTarget} ${activeNutrient.unit.split(' ')[0]})`, xPos + barWidth / 2, height - paddingBottom + 32);
+      });
+
+      // Leyenda del gráfico en el lienzo superior
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 12px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(`Gramos necesarios de ${activeFood.name} por población`, paddingLeft, paddingTop - 15);
+
+      // Renderizar tooltip de hover interactivo
+      if (hoveredBarIndex >= 0 && hoveredBarIndex < barsData.length) {
+        const hit = barsData[hoveredBarIndex];
+        
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
+        const ttW = 180;
+        const ttH = 65;
+        let ttX = hit.x + hit.w / 2 - ttW / 2;
+        let ttY = hit.y - ttH - 12;
+
+        // Impedir desbordes laterales
+        if (ttX < paddingLeft) ttX = paddingLeft;
+        if (ttX + ttW > width) ttX = width - ttW - 5;
+        if (ttY < 5) ttY = hit.y + hit.h + 5; // Dibujar debajo si no cabe arriba
+
+        ctx.beginPath();
+        ctx.roundRect(ttX, ttY, ttW, ttH, 8);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(`${hit.p.label} (RIEN Colombia)`, ttX + 10, ttY + 18);
+
+        ctx.font = '10px "Plus Jakarta Sans", sans-serif';
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText(`Requerimiento: ${hit.p.calculatedTarget} ${activeNutrient.unit}`, ttX + 10, ttY + 34);
+        
+        ctx.fillStyle = '#34d399';
+        ctx.font = 'bold 10px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText(`Gramos comida: ${hit.p.grams.toFixed(1)} g`, ttX + 10, ttY + 48);
+      }
+    }
+
+    // Helper para oscurecer colores en el hover
+    function adjustColorBrightness(hex, percent) {
+      let R = parseInt(hex.substring(1, 3), 16);
+      let G = parseInt(hex.substring(3, 5), 16);
+      let B = parseInt(hex.substring(5, 7), 16);
+
+      R = parseInt((R * (100 + percent)) / 100);
+      G = parseInt((G * (100 + percent)) / 100);
+      B = parseInt((B * (100 + percent)) / 100);
+
+      R = (R < 255) ? R : 255;
+      G = (G < 255) ? G : 255;
+      B = (B < 255) ? B : 255;
+
+      const rHex = (R.toString(16).length === 1) ? "0" + R.toString(16) : R.toString(16);
+      const gHex = (G.toString(16).length === 1) ? "0" + G.toString(16) : G.toString(16);
+      const bHex = (B.toString(16).length === 1) ? "0" + B.toString(16) : B.toString(16);
+
+      return "#" + rHex + gHex + bHex;
+    }
+
+    // Vincular detección de movimiento en el Canvas
+    function setupCanvasInteractivity() {
+      const canvas = document.getElementById('comparisonCanvas');
+      if (!canvas) return;
+
+      canvas.addEventListener('mousemove', (event) => {
+        const rect = canvas.getBoundingClientRect();
+        // Coordenadas locales en el Canvas
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        let activeIdx = -1;
+        for (let i = 0; i < barsData.length; i++) {
+          const bar = barsData[i];
+          // Validar si el puntero se encuentra en los límites horizontales de la barra y verticalmente
+          if (mouseX >= bar.x && mouseX <= bar.x + bar.w) {
+            // El rango vertical va desde el tope de la barra hasta la línea del eje X (paddingBottom)
+            const canvasHeight = rect.height;
+            const limitBottom = canvasHeight - 60; // Margen de eje X
+            if (mouseY >= bar.y && mouseY <= limitBottom) {
+              activeIdx = i;
+              break;
+            }
+          }
+        }
+
+        if (activeIdx !== hoveredBarIndex) {
+          hoveredBarIndex = activeIdx;
+          drawComparisonChart();
+        }
+      });
+
+      canvas.addEventListener('mouseleave', () => {
+        hoveredBarIndex = -1;
+        drawComparisonChart();
+      });
+
+      // Redibujado al cambiar tamaño de la ventana
+      window.addEventListener('resize', () => {
+        if (activeTab === 'tab-canvas') {
+          drawComparisonChart();
+        }
+      });
+    }
+
+    // Al cargar la ventana
+    window.onload = function() {
+      // Estado demográfico inicial
+      setLifeStage('juventud');
+      setGender('hombre');
+
+      // Cargar componentes dinámicos
+      buildNutrientMenu();
+      resetActiveSliders();
+      updateUI();
+      buildCanvasFoodSelector();
+
+      // Configurar Canvas interactivo
+      setupCanvasInteractivity();
+    };
+  </script>
+</body>
+</html>
